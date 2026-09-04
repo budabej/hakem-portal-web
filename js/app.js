@@ -70,6 +70,7 @@ function panelDoldur(profil) {
   el("pDil").textContent = profil.yabanci_dil || "—";
   el("iletisimEmail").value = profil.iletisim_email || "";
   el("telefon").value = profil.telefon || "";
+  el("adres").value = profil.adres || "";
 }
 
 async function vizeAidatYukle(hakemId) {
@@ -239,6 +240,7 @@ el("iletisimForm").addEventListener("submit", async (e) => {
   const { error } = await sb.from("hakemler").update({
     iletisim_email: el("iletisimEmail").value.trim() || null,
     telefon: el("telefon").value.trim() || null,
+    adres: el("adres").value.trim() || null,
   }).eq("id", user.id);
 
   durum.textContent = error ? "Kaydedilemedi." : "Kaydedildi.";
