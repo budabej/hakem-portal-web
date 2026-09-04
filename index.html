@@ -63,6 +63,54 @@
     </div>
 
     <div class="card">
+      <h2>Eğitim ve kayıtlarım</h2>
+      <div class="profil-izgara">
+        <div><span class="etiket">Eğitim</span><span id="pEgitim">—</span></div>
+        <div><span class="etiket">Yabancı dil</span><span id="pDil">—</span></div>
+      </div>
+
+      <div class="detay-blok">
+        <span class="etiket">Vize semineri katıldığım yıllar</span>
+        <div id="vizeListesi" class="yil-liste"></div>
+      </div>
+      <div class="detay-blok">
+        <span class="etiket">Aidat ödediğim yıllar</span>
+        <div id="aidatListesi" class="yil-liste"></div>
+      </div>
+      <p class="muted" style="margin-top:14px;">Bu bilgileri MHK günceller; bir hata gördüyseniz MHK ile iletişime geçin.</p>
+    </div>
+
+    <div class="card">
+      <h2>Başarı istatistiklerim</h2>
+      <p class="muted">Puan geçmişinize göre en başarılı ve en başarısız olduğunuz kategoriler.</p>
+      <div id="istatistikBos" class="muted" hidden>Henüz puan kaydınız yok, istatistik hesaplanamıyor.</div>
+      <div id="istatistikAlan" hidden>
+        <h3>Tüm zamanlar</h3>
+        <div class="ist-iki-sutun">
+          <div>
+            <span class="etiket">En başarılı</span>
+            <ul id="istTumBasarili" class="ist-liste"></ul>
+          </div>
+          <div>
+            <span class="etiket">En başarısız</span>
+            <ul id="istTumBasarisiz" class="ist-liste"></ul>
+          </div>
+        </div>
+        <h3>Son 2 yıl</h3>
+        <div class="ist-iki-sutun">
+          <div>
+            <span class="etiket">En başarılı</span>
+            <ul id="istSonBasarili" class="ist-liste"></ul>
+          </div>
+          <div>
+            <span class="etiket">En başarısız</span>
+            <ul id="istSonBasarisiz" class="ist-liste"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
       <h2>İletişim bilgilerim</h2>
       <p class="muted">Bu bilgiler sadece size aittir; MHK sizinle iletişime geçmek için kullanır.</p>
       <form id="iletisimForm" class="satir-form">

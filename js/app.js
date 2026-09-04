@@ -58,6 +58,7 @@ async function girisSonrasi() {
   panelDoldur(profil);
   ekranGoster("panel");
   karneYukle(user.id);
+  vizeAidatYukle(user.id);
 }
 
 function panelDoldur(profil) {
@@ -65,8 +66,28 @@ function panelDoldur(profil) {
   el("pSicil").textContent = profil.sicil_no;
   el("pKademe").textContent = profil.kademe;
   el("pIl").textContent = profil.il || "—";
+  el("pEgitim").textContent = profil.egitim || "—";
+  el("pDil").textContent = profil.yabanci_dil || "—";
   el("iletisimEmail").value = profil.iletisim_email || "";
   el("telefon").value = profil.telefon || "";
+}
+
+async function vizeAidatYukle(hakemId) {
+  const [{ data: vize }, { data: aidat }] = await Promise.all([
+    sb.from("hakem_vize_kayitlari").select("yil").eq("hakem_id", hakemId).order("yil", { ascending: false }),
+    sb.from("hakem_aidat_kayitlari").select("yil").eq("hakem_id", hakemId).order("yil", { ascending: false }),
+  ]);
+  yilListesiCiz("vizeListesi", vize || []);
+  yilListesiCiz("aidatListesi", aidat || []);
+}
+
+function yilListesiCiz(containerId, kayitlar) {
+  const kapsayici = el(containerId);
+  if (kayitlar.length === 0) {
+    kapsayici.innerHTML = `<span class="muted">Kayıt yok.</span>`;
+    return;
+  }
+  kapsayici.innerHTML = kayitlar.map((k) => `<span class="yil-chip">${k.yil}</span>`).join("");
 }
 
 async function karneYukle(hakemId) {
@@ -84,6 +105,7 @@ async function karneYukle(hakemId) {
 
   if (error || !data || data.length === 0) {
     goster("karneBos", true);
+    istatistikleriDoldur([]);
     return;
   }
 
@@ -102,6 +124,61 @@ async function karneYukle(hakemId) {
     tbody.appendChild(tr);
   }
   goster("karneTablo", true);
+  istatistikleriDoldur(data);
+}
+
+function istatistikleriDoldur(data) {
+  if (!data || data.length === 0) {
+    goster("istatistikBos", true);
+    goster("istatistikAlan", false);
+    return;
+  }
+  goster("istatistikBos", false);
+  goster("istatistikAlan", true);
+
+  const buYilNo = new Date().getFullYear();
+  const sonEsikYil = buYilNo - 1; // son 2 yil (bu yil dahil)
+
+  const tumZaman = kategoriOzet(data);
+  const sonYillar = kategoriOzet(data.filter((s) => {
+    if (!s.yarisma_tarihi) return false;
+    const yil = parseInt(String(s.yarisma_tarihi).slice(0, 4), 10);
+    return yil >= sonEsikYil;
+  }));
+
+  listeDoldur("istTumBasarili", tumZaman.enIyi);
+  listeDoldur("istTumBasarisiz", tumZaman.enKotu);
+  listeDoldur("istSonBasarili", sonYillar.enIyi);
+  listeDoldur("istSonBasarisiz", sonYillar.enKotu);
+}
+
+function kategoriOzet(satirlar) {
+  const grup = new Map();
+  for (const s of satirlar) {
+    if (s.puan === null || s.puan === undefined || !s.kategori_adi) continue;
+    const g = grup.get(s.kategori_adi) || { toplam: 0, adet: 0 };
+    g.toplam += Number(s.puan);
+    g.adet += 1;
+    grup.set(s.kategori_adi, g);
+  }
+  const liste = [...grup.entries()].map(([kategori, g]) => ({
+    kategori, ortalama: g.toplam / g.adet, adet: g.adet,
+  }));
+  return {
+    enIyi: [...liste].sort((a, b) => b.ortalama - a.ortalama).slice(0, 3),
+    enKotu: [...liste].sort((a, b) => a.ortalama - b.ortalama).slice(0, 3),
+  };
+}
+
+function listeDoldur(id, kayitlar) {
+  const ul = el(id);
+  if (!kayitlar || kayitlar.length === 0) {
+    ul.innerHTML = `<li class="muted">Yeterli veri yok.</li>`;
+    return;
+  }
+  ul.innerHTML = kayitlar.map((k) =>
+    `<li>${kacir(k.kategori)} — <strong>${k.ortalama.toFixed(1)}</strong> (${k.adet} kayıt)</li>`
+  ).join("");
 }
 
 function kacir(deger) {
