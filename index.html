@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hakem Portalı</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <span class="brand">Hakem Portalı</span>
+    <button id="cikisBtn" class="btn btn-ghost" hidden>Çıkış yap</button>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- GİRİŞ EKRANI -->
+  <section id="girisEkrani" class="card card-narrow">
+    <h1>Giriş yap</h1>
+    <p class="muted">MHK tarafından size iletilen giriş e-postanız ve şifrenizle giriş yapın.</p>
+    <form id="girisForm">
+      <label for="girisEmail">Giriş e-postası</label>
+      <input id="girisEmail" type="email" autocomplete="username" required>
+
+      <label for="girisSifre">Şifre</label>
+      <input id="girisSifre" type="password" autocomplete="current-password" required>
+
+      <button type="submit" class="btn btn-primary">Giriş yap</button>
+      <p id="girisHata" class="hata" hidden></p>
+    </form>
+  </section>
+
+  <!-- ŞİFRE DEĞİŞTİRME (ilk giriş zorunlu) -->
+  <section id="sifreEkrani" class="card card-narrow" hidden>
+    <h1>Yeni şifre belirleyin</h1>
+    <p class="muted">İlk girişiniz için MHK'nin size verdiği geçici şifreyi kullandınız. Devam etmeden önce
+       kendi belirleyeceğiniz yeni bir şifre girmeniz gerekiyor.</p>
+    <form id="sifreForm">
+      <label for="yeniSifre1">Yeni şifre (en az 8 karakter)</label>
+      <input id="yeniSifre1" type="password" minlength="8" required>
+
+      <label for="yeniSifre2">Yeni şifre (tekrar)</label>
+      <input id="yeniSifre2" type="password" minlength="8" required>
+
+      <button type="submit" class="btn btn-primary">Şifreyi kaydet ve devam et</button>
+      <p id="sifreHata" class="hata" hidden></p>
+    </form>
+  </section>
+
+  <!-- PANEL -->
+  <section id="panel" hidden>
+
+    <div class="card">
+      <h1 id="hosgeldin"></h1>
+      <div class="profil-izgara">
+        <div><span class="etiket">Sicil no</span><span id="pSicil"></span></div>
+        <div><span class="etiket">Kademe</span><span id="pKademe" class="rozet"></span></div>
+        <div><span class="etiket">İl</span><span id="pIl">—</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>İletişim bilgilerim</h2>
+      <p class="muted">Bu bilgiler sadece size aittir; MHK sizinle iletişime geçmek için kullanır.</p>
+      <form id="iletisimForm" class="satir-form">
+        <div>
+          <label for="iletisimEmail">İletişim e-postası</label>
+          <input id="iletisimEmail" type="email" placeholder="ornek@eposta.com">
+        </div>
+        <div>
+          <label for="telefon">Telefon</label>
+          <input id="telefon" type="tel" placeholder="05xx xxx xx xx">
+        </div>
+        <button type="submit" class="btn btn-secondary">Kaydet</button>
+        <span id="iletisimDurum" class="muted"></span>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Karnem</h2>
+      <p class="muted">Geçmiş müsabakalarda aldığınız puanlar.</p>
+      <div id="karneYukleniyor" class="muted">Yükleniyor…</div>
+      <div id="karneBos" class="muted" hidden>Henüz kayıtlı bir puan geçmişiniz yok.</div>
+      <div class="tablo-scroll">
+        <table id="karneTablo" class="tablo" hidden>
+          <thead>
+            <tr>
+              <th>Yarışma</th>
+              <th>Tarih</th>
+              <th>Yer</th>
+              <th>Kategori</th>
+              <th>Round</th>
+              <th>Puan</th>
+            </tr>
+          </thead>
+          <tbody id="karneTbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
