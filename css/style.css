@@ -140,3 +140,19 @@ h3 { font-size: 0.95rem; margin: 16px 0 8px; }
 .ist-liste { list-style: none; padding: 0; margin: 6px 0 0; font-size: 0.88rem; }
 .ist-liste li { padding: 5px 0; border-bottom: 1px solid var(--border); }
 .ist-liste li:last-child { border-bottom: none; }
+
+/* mobil uyum */
+@media (max-width: 640px) {
+  .wrap { padding: 14px 12px 40px; }
+  .card { padding: 16px 14px; }
+  .topbar-inner { flex-wrap: wrap; gap: 8px; padding: 10px 14px; }
+  .brand-grup .logo { height: 30px; }
+  .brand { font-size: 0.95rem; }
+  .brand-alt { font-size: 0.65rem; }
+  h1 { font-size: 1.15rem; }
+  .satir-form { flex-direction: column; align-items: stretch; }
+  .satir-form input, .satir-form textarea { width: 100%; }
+  .profil-izgara { grid-template-columns: 1fr 1fr; }
+  .ist-iki-sutun { grid-template-columns: 1fr; }
+  .btn { width: 100%; }
+}
